@@ -31,11 +31,13 @@ db
 //* Require Routes
 const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/user')
+const categoryRoutes = require('./routes/category')
 
 //* Register Our Routes
 app.use('/api', authRoutes)
 
 app.use('/api/user', userRoutes);
+app.use('/api/category', categoryRoutes);
 
 
 //* Routes test
