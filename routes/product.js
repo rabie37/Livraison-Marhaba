@@ -1,18 +1,25 @@
 const express = require('express');
 const ProductController = require('../controllers/ProductController')
 const ProductRouter = express.Router();
+const multer = require('multer')
+
+const upload = multer();
 
 
 
 ProductRouter
-        .route('/')
-        .get(async (req, res)=> CategoryController.getProduct(req, res))
-        .post(async (req, res)=> CategoryController.createProduct(req, res))
-        .put(async (req, res)=> CategoryController.updateProduct(req, res))
-        
+        .route('/list')
+        .get(ProductController.getProduct)
 ProductRouter
-        .route('/:id')
-        .delete(async (req, res)=> ProductController.deleteProduct(req, res))
+        .route('/create')
+        .post(upload.fields([{ name: 'image', maxCount: 1 }]), ProductController.createProduct)
+ProductRouter
+        .route('/update/:id')
+        .put(ProductController.updateProduct)
+
+ProductRouter
+        .route('/delete/:id')
+        .delete(ProductController.deleteProduct)
 
 
 

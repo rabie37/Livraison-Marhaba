@@ -6,18 +6,18 @@ const UserRouter = express.Router();
 
 UserRouter
         .route('/list')
-        .get(async (req, res) => UserController.getUser(req, res))
+        .get(UserController.getUser)
 
 UserRouter
         .route('/create')
-        .post(async (req, res) => UserController.createUser(req, res))
+        .post(UserController.createUser)
 
 UserRouter
         .route('/update/:id')
-        .put(async (req, res) => UserController.updateUser(req, res))
+        .put(UserController.updateUser)
 UserRouter
-        .route('/:id')
-        .delete(async (req, res) => UserController.deleteUser(req, res))
+        .route('/delete/:id')
+        .delete(UserController.deleteUser)
 
 
 

@@ -6,17 +6,17 @@ const CategoryRouter = express.Router();
 
 CategoryRouter
         .route('/list')
-        .get(async (req, res) => CategoryController.getCategory(req, res))
+        .get(CategoryController.getCategory)
 CategoryRouter
         .route('/create')
-        .post(async (req, res) => CategoryController.createCategory(req, res))
+        .post(CategoryController.createCategory)
 
 CategoryRouter
         .route('/update/:id')
-        .put(async (req, res) => CategoryController.updateCategory(req, res))
+        .put(CategoryController.updateCategory)
 CategoryRouter
         .route('/delete/:id')
-        .delete(async (req, res) => CategoryController.deleteCategory(req, res))
+        .delete(CategoryController.deleteCategory)
 
 
 
