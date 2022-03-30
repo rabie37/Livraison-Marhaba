@@ -30,9 +30,13 @@ db
 
 //* Require Routes
 const authRoutes = require('./routes/auth')
+const userRoutes = require('./routes/user')
 
 //* Register Our Routes
 app.use('/api', authRoutes)
+
+app.use('/api/user', userRoutes);
+
 
 //* Routes test
 app.get('/test', (rep, res) => res.send('test'))
