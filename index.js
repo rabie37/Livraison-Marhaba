@@ -33,6 +33,7 @@ const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/user')
 const categoryRoutes = require('./routes/category')
 const productRoutes = require('./routes/product')
+const commandRoutes = require('./routes/command')
 
 //* Register Our Routes
 app.use('/api', authRoutes)
@@ -40,6 +41,7 @@ app.use('/api', authRoutes)
 app.use('/api/user', userRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/product', productRoutes);
+app.use('/api/command', commandRoutes);
 
 
 //* Routes test

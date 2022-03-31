@@ -1,5 +1,5 @@
 const express = require('express');
-const CommandController = require('../controllers/Comand_ProController')
+const CommandController = require('../controllers/CommandController')
 const CommandRouter = express.Router();
 const AuthMiddleware = require("./../middlewares/AuthMiddleware");
 
@@ -16,7 +16,7 @@ CommandRouter
         .put(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin", "client", "delivery"]),CommandController.updateCommand)
 
 CommandRouter
-        .route('/update/:id')
+        .route('/delete/:id')
         .delete(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin", "client", "delivery"]),CommandController.deleteCommand)
 
 

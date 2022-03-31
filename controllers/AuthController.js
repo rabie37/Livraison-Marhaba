@@ -7,7 +7,7 @@ const SCRT_TOKEN = process.env.SCRT_TOKEN || '61e54edd1875b1301e7f8455'
 exports.login = async (req, res) => {
     let data = req.body;
 
-    User.findOne({ email: data.email }).then(user => {
+    User.findOne({where : { email: data.email }}).then(user => {
 
         if (user && user.password == req.body.password) { // Login true
             let token = jwt.sign(
