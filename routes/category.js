@@ -1,22 +1,23 @@
 const express = require('express');
 const CategoryController = require('../controllers/CategoryController')
 const CategoryRouter = express.Router();
+const AuthMiddleware = require("./../middlewares/AuthMiddleware");
 
 
 
 CategoryRouter
         .route('/list')
-        .get(CategoryController.getCategory)
+        .get(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin", "client", "delivery"]),CategoryController.getCategory)
 CategoryRouter
         .route('/create')
-        .post(CategoryController.createCategory)
+        .post(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]),CategoryController.createCategory)
 
 CategoryRouter
         .route('/update/:id')
-        .put(CategoryController.updateCategory)
+        .put(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]),CategoryController.updateCategory)
 CategoryRouter
         .route('/delete/:id')
-        .delete(CategoryController.deleteCategory)
+        .delete(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]),CategoryController.deleteCategory)
 
 
 

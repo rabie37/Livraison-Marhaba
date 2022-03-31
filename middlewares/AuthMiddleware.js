@@ -14,10 +14,15 @@ exports.isLogin = (req, res, next) => { // check if token valid
 }
 
 exports.hasRole = function(role){
-    return (req, res, next) => {
-        if (!role.includes(req.user.role)) {
-            res.status(401).json({ message: 'you dont have access to this route!' })
+    let roles = ["admin", 'delivery', 'client']
+
+    return async (req, res, next) => {
+        let checkRole = (roles.indexOf(role) + 1)
+
+        if (checkRole == req.user.role) {
+            next();
+        } else {
+            res.status('401').json({ message: 'Role : ' + userRole })
         }
-        next();    
     }
 }

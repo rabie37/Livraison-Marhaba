@@ -1,18 +1,23 @@
 const express = require('express');
 const CommandController = require('../controllers/Comand_ProController')
 const CommandRouter = express.Router();
+const AuthMiddleware = require("./../middlewares/AuthMiddleware");
 
 
 
 CommandRouter
-        .route('/')
-        .get(async (req, res)=> CommandController.getCommand(req, res))
-        .post(async (req, res)=> CommandController.createCommand(req, res))
-        .put(async (req, res)=> CommandController.updateCommand(req, res))
-        
+        .route('/list')
+        .get(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin", "client", "delivery"]),CommandController.getCommand)
 CommandRouter
-        .route('/:id')
-        .delete(async (req, res)=> CommandController.deleteCommand(req, res))
+        .route('/create')
+        .post(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin", "client", "delivery"]),CommandController.createCommand)
+CommandRouter
+        .route('/update/:id')
+        .put(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin", "client", "delivery"]),CommandController.updateCommand)
+
+CommandRouter
+        .route('/update/:id')
+        .delete(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin", "client", "delivery"]),CommandController.deleteCommand)
 
 
 
