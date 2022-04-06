@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
                 user: user
             }));
         } else {
-            res.status(400).json((data, 'Info in correct'));
+            res.status(400).json((data, 'Info not correct'));
         }
     });
 };

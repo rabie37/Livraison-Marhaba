@@ -45,5 +45,6 @@ module.exports = {
     User,
     Category,
     Product,
-    Command
+    Command,
+    CommandProduct
 }

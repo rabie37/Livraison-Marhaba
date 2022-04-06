@@ -55,3 +55,17 @@ exports.deleteCategory = async (req, res) => {
         });
 
 };
+exports.getOneCategory = async (req, res) => {
+    try {
+        const categorys = await Category.findOne({
+            where: {
+                id: req.params.id
+            },
+           
+        })
+
+        res.json(categorys);
+    } catch (error) {
+        res.status(500).json(error, 'error');
+    }
+}

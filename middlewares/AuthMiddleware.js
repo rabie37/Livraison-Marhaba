@@ -13,16 +13,24 @@ exports.isLogin = (req, res, next) => { // check if token valid
     }
 }
 
-exports.hasRole = function(role){
-    let roles = ["admin", 'delivery', 'client']
-
+exports.hasRole = function (roles) {
     return async (req, res, next) => {
-        let checkRole = (roles.indexOf(role) + 1)
 
-        if (checkRole == req.user.role) {
-            next();
-        } else {
-            res.status('401').json({ message: 'Role : ' + userRole })
+        let state = false;
+
+        roles.forEach(function (role) {
+            let BaseRole = ['admin', 'delivery', 'client'];
+            let checkRole = (BaseRole.indexOf(role) + 1);
+            console.log('checkRole == req.user.role : ' , checkRole == req.user.role);
+            if (checkRole == req.user.role) {
+                state = true;
+            }
+        })
+
+        if (state) {
+            return next();
         }
+        
+        res.status('401').json({ message: 'Role incorrect '})
     }
 }

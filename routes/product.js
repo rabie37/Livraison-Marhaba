@@ -10,17 +10,20 @@ const upload = multer();
 
 ProductRouter
         .route('/list')
-        .get(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]),ProductController.getProduct)
+        .get(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]), ProductController.getProduct)
 ProductRouter
         .route('/create')
-        .post(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]),upload.fields([{ name: 'image', maxCount: 1 }]), ProductController.createProduct)
+        .post(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]), upload.fields([{ name: 'image', maxCount: 1 }]), ProductController.createProduct)
 ProductRouter
         .route('/update/:id')
-        .put(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]),ProductController.updateProduct)
+        .put(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]), ProductController.updateProduct)
 
 ProductRouter
         .route('/delete/:id')
-        .delete(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]),ProductController.deleteProduct)
+        .delete(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]), ProductController.deleteProduct)
+ProductRouter
+        .route('/:id')
+        .get(AuthMiddleware.isLogin, AuthMiddleware.hasRole(['admin']), ProductController.getOneProduct)
 
 
 

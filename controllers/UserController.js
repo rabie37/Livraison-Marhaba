@@ -4,7 +4,7 @@ const { User } = require("../models/index");
 exports.getUser = async (req, res) => {
     const user = await User.findAll()
         .then((user) => {
-            res.json(user);
+            res.json({ status: 200, user });
         })
         .catch((err) => {
             res.json({ status: 400, message: err });
@@ -14,15 +14,15 @@ exports.getUser = async (req, res) => {
 exports.createUser = async (req, res) => {
     const email = req.body.email
     const password = req.body.password
-    const role = req.body.role
-    const status = req.body.status
+    const role = ["1", "2", "3"].includes(data.role) == true ? data.role : "2"
+    const status = 1
 
     await User.create({
         email: email, password: password, role: role, status: status
     })
         .then((user) => {
 
-            return res.json(user)
+            return res.json({ status: 200, user })
         })
         .catch((err) => {
             res.send({ status: 400, message: err });
@@ -37,21 +37,31 @@ exports.updateUser = async (req, res) => {
             name: data.name,
             email: data.email,
             password: data.password,
-            role: data.role,
-            status: data.status,
+            role: ["1", "2", "3"].includes(data.role) == true ? data.role : "2",
+            status: 1,
 
-        },{
-            where: { id: req.params.id }
-        })
+        }, {
+        where:
+        {
+            id: req.params.id
+        }
+    })
         .then((userUpdate) => {
-            res.json({status: 200, userUpdate });
+            res.json({ status: 200, userUpdate });
         })
         .catch((err) => {
             res.send({ status: 400, message: err });
         });
 };
 exports.deleteUser = async (req, res) => {
-    const users = await User.destroy({ where: { id: req.params.id } })
+    const users = await User.destroy(
+        {
+            where:
+            {
+                id: req.params.id
+            }
+        }
+    )
         .then((users) => {
             res.json({ users });
         })
@@ -60,3 +70,21 @@ exports.deleteUser = async (req, res) => {
         });
 
 };
+exports.status_change = async (req, res) => {
+    try {
+        const user = await User.update(
+            {
+                'status': req.params.status == 1 ? 1 : 0
+            },
+            {
+                where: {
+                    id: req.params.id
+                }
+            }
+        )
+        res.json('status change for :',user);
+    } catch (error) {
+        res.status(500).json(toJson(error, 'error'));
+    }
+}
+

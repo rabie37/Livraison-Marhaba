@@ -66,3 +66,16 @@ exports.deleteProduct = async (req, res) => {
         });
 
 };
+exports.getOneProduct = async (req, res) => {
+    try {
+        const products = await Product.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+
+        res.json(products);
+    } catch (error) {
+        res.status(500).json(error, 'error');
+    }
+}

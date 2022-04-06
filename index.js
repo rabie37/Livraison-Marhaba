@@ -6,6 +6,10 @@
 const express = require('express')
 const bodyParser = require('body-parser') //? The will let us get data the data form post
 require('./models/index');
+const AuthMiddleware = require('./middlewares/AuthMiddleware')
+require('./models/index');
+let chai = require('chai');
+
 
 //* Create our app
 const app = express()
@@ -37,6 +41,7 @@ const commandRoutes = require('./routes/command')
 
 //* Register Our Routes
 app.use('/api', authRoutes)
+app.use('/api/user', AuthMiddleware.isLogin, AuthMiddleware.hasRole('admin'), userRoutes)
 
 app.use('/api/user', userRoutes);
 app.use('/api/category', categoryRoutes);
@@ -60,3 +65,4 @@ function ConsolLog(rep, res, next) {
 
 app.use(ConsolLog);
 // console end
+// module.exports = server
