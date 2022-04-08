@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-const SCRT_TOKEN = process.env.SCRT_TOKEN ?? '61e54edd1875b1301e7f8455'
+const SCRT_TOKEN = process.env.SCRT_TOKEN 
 
 exports.isLogin = (req, res, next) => { // check if token valid
     var token = req.header('Authorization')

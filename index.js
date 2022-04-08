@@ -8,7 +8,7 @@ const bodyParser = require('body-parser') //? The will let us get data the data 
 require('./models/index');
 const AuthMiddleware = require('./middlewares/AuthMiddleware')
 require('./models/index');
-let chai = require('chai');
+const morgan = require('morgan')
 
 
 //* Create our app
@@ -31,6 +31,29 @@ db
     .catch(err => {
         console.error('Unable to connect to the database:', err);
     });
+
+//* MORGAN
+morgan.token('hasRole', function(req, res) {
+    return req.headers['hasRole']
+})
+app.use(morgan(':method :url :status :hasRole'));
+morgan.token("json", function(req, res) {
+    return JSON.stringify({
+        url: req.url,
+        method: req.method,
+        httpVersion: req.httpVersion
+    })
+})
+morgan(function (tokens, req, res) {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'), '-',
+      tokens['response-time'](req, res), 'ms'
+    ].join(' ')
+  })
+app.use(morgan('combined'))
 
 //* Require Routes
 const authRoutes = require('./routes/auth')
