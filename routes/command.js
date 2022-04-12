@@ -27,6 +27,9 @@ CommandRouter
 CommandRouter
         .route('/status/:id/:status')
         .get(AuthMiddleware.isLogin, AuthMiddleware.hasRole(["admin"]), CommandController.status_change_command)
+CommandRouter
+        .route('/:id/mail')
+        .get(CommandController.mail)
 
 
 

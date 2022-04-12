@@ -1,5 +1,9 @@
 
 const { Command, CommandProduct } = require("../models/index");
+const nodemailer = require("nodemailer");
+require('dotenv').config()
+
+
 
 exports.getCommand = async (req, res) => {
     const command = await Command.findAll({ include: ['products', 'client', 'delivery'] })
@@ -35,9 +39,9 @@ exports.createCommand = async (req, res) => {
             commandId: command.id
         })
         total += (product.qty * product.price)
-        
 
-        
+
+
         const UpCommand = await Command.update(
             {
                 'total': total,
@@ -118,7 +122,12 @@ exports.set_delivery = async (req, res) => {
 }
 exports.status_change_command = async (req, res) => {
     try {
-        let statusCommand = ['1', '2', '3', '4','5']
+        const statusCommand = [];
+        statusCommand[1] = "New"
+        statusCommand[2] = "In production"
+        statusCommand[3] = "In livrition"
+        statusCommand[4] = "Delevred"
+        statusCommand[5] = "Canceled"
 
         if (statusCommand.includes(req.params.status)) {
             const command = await Command.update(
@@ -131,14 +140,70 @@ exports.status_change_command = async (req, res) => {
                     }
                 }
             )
-        }else{
-            throw('Error, invalid status: ' + req.params.status);
+        } else {
+            throw ('Error, invalid status: ' + req.params.status);
         }
-        
-        res.status(200).json({message: 'status change for command:'});
+
+        res.status(200).json({ message: 'status change for command:' });
     } catch (error) {
         res.status(401).json({ message: error });
     }
 }
+exports.mail = async (req, res) => {
+    try {
+        const command = await Command.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: ['products', 'client', 'delivery']
+        })
+
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            host: process.env.MAIL_HOST,
+            port: process.env.MAIL_PORT,
+            secure: (process.env.MAIL_ENCRYPTION == 'ssl'), // true for 465, false for other ports
+            auth: {
+                user: process.env.MAIL_USERNAME, // generated ethereal user
+                pass: process.env.MAIL_PASSWORD, // generated ethereal password
+            },
+        });
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            From: '"Fred Foo 👻" ' + process.env.MAIL_FROM_ADDRESS, // sender address
+            to: "eladabrabie@gmail.com", // list of receivers
+            subject: "Hello ✔", // Subject line
+            text: "Hello world?", // plain text body
+            
+        });
+
+
+        res.json(command);
+    } catch (error) {
+        res.status(500).json({message: error});
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// html: `
+            // <b>Hello ${command.client.email},</b>
+            // you have command to '${command.address}', by total ${command.total}Dh,
+            // <b> Status : ${commandStatus[command.status]}`, // html body
 
 

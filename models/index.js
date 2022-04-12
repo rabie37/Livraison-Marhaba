@@ -34,6 +34,7 @@ Product.belongsToMany(Command, {
     as: "commands",
 });
 
+
 // Create table of model 
 db.sync({ force: false }).then(
     () => {
@@ -46,5 +47,6 @@ module.exports = {
     Category,
     Product,
     Command,
-    CommandProduct
+    CommandProduct,
+
 }
